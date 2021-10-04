@@ -5,6 +5,8 @@ import asyncio, time, logging,handlers, schedule
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 
+a = lambda: loop.create_task(handlers.check_schedule())
+
 async def me(list):
     await asyncio.sleep(20)
     meh = 1
@@ -57,6 +59,13 @@ all_list = [yo, alt, andrea, cathy, sam , mass, isma, bilbo, japz, noris, noris2
 
 quest_list = [yo, alt, cathy, andrea, mass, isma, bilbo, japz, noris2, electro, caro, shay, manu, muffin, manualt, carlos1, carlos2, carlos3, carlos5, y_soyKlau, y_charly, y_babi, yisus, shay1, shay2, shay3, shay4, lachy]
 
+forward_mobs_list =  [yo, alt, cathy, mass, cathy, isma, bilbo, japz, noris2, caro, muffin, yisus, y_soyKlau]
+
+hunt_list = [yo, cathy, isma, noris, electro, manu, muffin, yisus, y_soyKlau]
+
+pledge_accept_list = [yo, sam, noris, electro, shay, manu, lachy] 
+
+trader_list = [isma, yisus, andrea]
 
 for client in all_list:
     client.add_event_handler(handlers.handle_updateMe)
@@ -66,6 +75,30 @@ for client in all_list:
     client.add_event_handler(handlers.handle_Full_Stamina)
     client.add_event_handler(handlers.handle_stam_deplete)
     client.add_event_handler(handlers.Handle_Do_quest)
+
+for client in hunt_list:
+    client.add_event_handler(handlers.handle_bichos_hunt)
+    client.add_event_handler(handlers.handle_if_alive)
+    client.add_event_handler(handlers.handle_if_death)
+
+for client in pledge_accept_list:
+    client.add_event_handler(handlers.handle_pldege_accept)
+
+for client in trader_list:
+    client.add_event_handler(handlers.handle_trader)
+
+for client in forward_mobs_list:
+    client.add_event_handler(handlers.handle_Mods)
+
+yo.add_event_handler(handlers.handle_withdrawing)
+yo.add_event_handler(handlers.handle_withdraw)
+yo.add_event_handler(handlers.handle_click_pve)
+
+electro.add_event_handler(handlers.handle_click_pve)
+
+shay.add_event_handler(handlers.handle_order3)
+shay.add_event_handler(handlers.handle_order2)
+
 
 controlBot.add_event_handler(handlers.handle_StartBot)
 controlBot.add_event_handler(handlers.handle_atk_on_bot)
@@ -86,173 +119,71 @@ controlBot.add_event_handler(handlers.set_order)
 controlBot.add_event_handler(handlers.handle_get_orders)
 
 
-#yo
-yo.add_event_handler(handlers.handle_withdrawing)
-yo.add_event_handler(handlers.handle_withdraw)
-yo.add_event_handler(handlers.handle_Mods)
-yo.add_event_handler(handlers.handle_bichos_hunt)
-yo.add_event_handler(handlers.handle_if_alive)
-yo.add_event_handler(handlers.handle_if_death)
-yo.add_event_handler(handlers.handle_pldege_accept)
-yo.add_event_handler(handlers.handle_click_pve)
-
-
-#alt
-alt.add_event_handler(handlers.handle_Mods)
-
-#kathy
-cathy.add_event_handler(handlers.handle_if_alive)
-cathy.add_event_handler(handlers.handle_if_death)
-cathy.add_event_handler(handlers.handle_bichos_hunt)
-cathy.add_event_handler(handlers.handle_Mods)
-
-#sam
-sam.add_event_handler(handlers.handle_pldege_accept)
-
-#mass
-mass.add_event_handler(handlers.handle_Mods)
-
-
-#isma
-isma.add_event_handler(handlers.handle_Mods)
-isma.add_event_handler(handlers.handle_bichos_hunt)
-isma.add_event_handler(handlers.handle_if_alive)
-isma.add_event_handler(handlers.handle_if_death)
-isma.add_event_handler(handlers.handle_trader)
-
-
-#bilbo
-bilbo.add_event_handler(handlers.handle_Mods)
-
-#japs
-japz.add_event_handler(handlers.handle_Mods)
-
-#noris
-noris.add_event_handler(handlers.handle_pldege_accept)
-noris.add_event_handler(handlers.handle_bichos_hunt)
-noris.add_event_handler(handlers.handle_if_death)
-noris.add_event_handler(handlers.handle_if_alive)
-
-#norris
-noris2.add_event_handler(handlers.handle_Mods)
- 
-#electro
-electro.add_event_handler(handlers.handle_Mods)
-electro.add_event_handler(handlers.handle_bichos_hunt)
-electro.add_event_handler(handlers.handle_if_alive)
-electro.add_event_handler(handlers.handle_if_death)
-electro.add_event_handler(handlers.handle_pldege_accept)
-electro.add_event_handler(handlers.handle_click_pve)
-
-#carola
-caro.add_event_handler(handlers.handle_Mods)
-
-
-#shay
-shay.add_event_handler(handlers.handle_pldege_accept)
-shay.add_event_handler(handlers.handle_order3)
-shay.add_event_handler(handlers.handle_order2)
-
-#manu
-manu.add_event_handler(handlers.handle_Mods)
-manu.add_event_handler(handlers.handle_bichos_hunt)
-manu.add_event_handler(handlers.handle_if_alive)
-manu.add_event_handler(handlers.handle_if_death)
-manu.add_event_handler(handlers.handle_pldege_accept)
-
-#muffin
-muffin.add_event_handler(handlers.handle_Mods)
-muffin.add_event_handler(handlers.handle_bichos_hunt)
-muffin.add_event_handler(handlers.handle_if_alive)
-muffin.add_event_handler(handlers.handle_if_death)
-
-
-#yisus
-yisus.add_event_handler(handlers.handle_Mods)
-yisus.add_event_handler(handlers.handle_bichos_hunt)
-yisus.add_event_handler(handlers.handle_if_alive)
-yisus.add_event_handler(handlers.handle_if_death)
-yisus.add_event_handler(handlers.handle_trader)
-
-
-#souklau
-y_soyKlau.add_event_handler(handlers.handle_Mods)
-y_soyKlau.add_event_handler(handlers.handle_bichos_hunt)
-y_soyKlau.add_event_handler(handlers.handle_if_alive)
-y_soyKlau.add_event_handler(handlers.handle_if_death)
-
-#lachy
-lachy.add_event_handler(handlers.handle_pldege_accept)
-
-#andrea
-andrea.add_event_handler(handlers.handle_trader)
-
-
 print('Done')
 controlBot.start()
-try:
+try: #yo
     yo.start()
-    loop.create_task(handlers.register(yo, quest=False, hunt=True, favQuest=[1,2],arenaTime='15:30'  , rngrAtk=True, alliance = True))
+    loop.create_task(handlers.register(yo, quest=False, hunt=True, favQuest=[1,2], arenaTime='15:30', rngrAtk=True, alliance = True, forwardMobsTo=1420240083))
 except: print(2)
-try:
+try: #alt
     alt.start()
-    loop.create_task(handlers.register(alt, attack=True, quest=True , favQuest=[0,1,2],arenaTime='15:00'  , forwardMobsTo=1420240083, alliance = True))
+    loop.create_task(handlers.register(alt, attack=True, quest=True, favQuest=[0,1,2], arenaTime='15:00', forwardMobsTo=1420240083, alliance = True))
 except: print(3)
-try:
+try: #Cathy
     cathy.start()
-    loop.create_task(handlers.register(cathy, attack=True, quest=True, hunt=False , favQuest=[0,1,2], arenaTime='08:00'  , forwardMobsTo=1420240083, alliance = True))
+    loop.create_task(handlers.register(cathy, attack=True, quest=True, hunt=False , favQuest=[0,1,2], arenaTime='08:00', forwardMobsTo=1420240083, alliance = True))
 except: print(4)
-try:
+try: #samuel
     sam.start()
     loop.create_task(handlers.register(sam, attack=True, alliance = True))
 except: print(5)
-try: 
+try: #mass
     mass.start()
-    loop.create_task(handlers.register(mass, attack=True, quest=True, favQuest=[0], arenaTime='15:45'  , forwardMobsTo=1420240083, alliance = True))
+    loop.create_task(handlers.register(mass, attack=True, quest=True, favQuest=[0], arenaTime='15:45', forwardMobsTo=1420240083, alliance = True))
 except: print(6)
-try:
+try: #isma
     isma.start()
     loop.create_task(handlers.register(isma, attack=True ,quest=False, hunt=True, arenaTime='14:00', favQuest=[1,2], forwardMobsTo=745224074, traderId='08', alliance = True))
 except: print(8)
-try:
+try: #imsa alts
     bilbo.start()
     loop.create_task(handlers.register(bilbo, attack=True, quest=True, favQuest=[0,2],arenaTime='13:00'  , forwardMobsTo=1420240083, alliance = True))
     japz.start()
     loop.create_task(handlers.register(japz, attack=True, quest=True, favQuest=[0,2],arenaTime='13:00'  , forwardMobsTo=1420240083, alliance = True))
 except: print(9)
-try:
+try: #noris
     noris.start()
     loop.create_task(handlers.register(noris, rngrAtk=True, hunt=True, alliance = True))
 except: print(10)
-try: 
+try: #noris alt
     noris2.start()
     loop.create_task(handlers.register(noris2, attack=True, quest=True, favQuest=[0], arenaTime='06:00', forwardMobsTo=1420240083, alliance = True))
 except: print(10.1)
-try:
+try: #electro gay
     electro.start()
-    loop.create_task(handlers.register(electro, hunt=True, arenaTime='04:30', rngrAtk=True))
+    loop.create_task(handlers.register(electro, quest=True, favQuest=[0,1,2], hunt=True, arenaTime='04:30', rngrAtk=True))
 except: print(11)
-try: 
+try: #caro
     caro.start()
     loop.create_task(handlers.register(caro, attack=True ,quest=True, favQuest=[0], arenaTime='05:00'  , forwardMobsTo=1420240083, alliance = True))
 except: print(12)
-try: 
+try: #shay
     shay.start()
     loop.create_task(handlers.register(shay, quest=True, favQuest=[0,1,2]  ))
 except: print(14)
-try:
+try: #manu
     manu.start()
     loop.create_task(handlers.register(manu, hunt=True, quest=False, favQuest=[0,2],))
 except: print(15)
-try:
+try: #muffin
     muffin.start()
     loop.create_task(handlers.register(muffin, quest=False, hunt=True, arenaTime='05:00', favQuest=[1,2]  , forwardMobsTo=1420240083, rngrAtk=True, alliance = True))
 except: print(16)
-try: 
+try: #manu alt
     manualt.start()
     loop.create_task(handlers.register(manualt, quest=True, favQuest=[0,1,2]))
 except: print(17)
-try: 
+try: #carlos alts
     carlos1.start()
     loop.create_task(handlers.register(carlos1, quest=False, attack=True, favQuest=[0,1,2], arenaTime='05:17', alliance = True))
 except: print(22)
@@ -268,8 +199,7 @@ try:
     carlos5.start()
     loop.create_task(handlers.register(carlos5,attack=False, quest=False, favQuest=[0,1,2], arenaTime='13:19'))
 except: print(26)
-
-try: 
+try: #yisus alts
     y_babi.start()
     loop.create_task(handlers.register(y_babi, quest=True,attack=True, favQuest=[0,1,2], arenaTime='05:40', alliance = True))
 except: print(27)
@@ -281,15 +211,15 @@ try:
     y_charly.start()
     loop.create_task(handlers.register(y_charly, quest=True, attack=True, favQuest=[0,1,2], arenaTime='05:42', alliance = True))
 except: print(29)
-try:
+try: #yisus
     yisus.start()
-    loop.create_task(handlers.register(yisus, quest=False, hunt=True, arenaTime='06:00', favQuest=[0,1,2], traderId='08', rngrAtk=True, alliance = True))
+    loop.create_task(handlers.register(yisus, quest=False, hunt=True, arenaTime='06:00', favQuest=[0,1,2], traderId='08', rngrAtk=True, alliance = True, forwardMobsTo=1420240083))
 except: print(30)
-try:
+try: #soy_clau
     y_soyKlau.start()
-    loop.create_task(handlers.register(y_soyKlau, quest=False, hunt=True, arenaTime='06:10', favQuest=[0,1,2], rngrAtk=True, alliance = True))
+    loop.create_task(handlers.register(y_soyKlau, quest=False, hunt=True, arenaTime='06:10', favQuest=[0,1,2], rngrAtk=True, alliance = True, forwardMobsTo=1420240083))
 except: print(31)
-try: 
+try: #shay alts
     shay1.start()
     loop.create_task(handlers.register(shay1, quest=True, favQuest=[0,1,2], arenaTime='07:19'))
 except: print(32)
@@ -305,22 +235,20 @@ try:
     shay4.start()
     loop.create_task(handlers.register(shay4, quest=True, favQuest=[0,1,2], arenaTime='04:19'))
 except: print(35)
-try: 
+try: #lachy
     lachy.start()
     loop.create_task(handlers.register(lachy, quest=True, attack=True, favQuest=[0,1,2], arenaTime='11:13', alliance = True))
 except: print(36)
-try:
+try: #andrea
     andrea.start()
     loop.create_task(handlers.register(andrea, quest=True, attack=False, favQuest=[0,1,2], traderId='02', arenaTime='11:35'))
-except:
-    print(38)
+except: print(38)
 
 
 
 
 loop.create_task(handlers.scheduleArenas())
 loop.create_task(me(all_list))
-a = lambda: loop.create_task(handlers.check_schedule())
 
 a()
 
