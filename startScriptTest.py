@@ -1,6 +1,6 @@
 from math import trunc
 from re import A
-from data import api_id, api_hash, bot_string_session, my_string_session, alt_string_session, cathy_string_session, samuel_string_session, massi_string_session, isma_string_session, bilbo_string_session, japs_string_session, noris_string_session,electro_string_session, carola_string_session, shay_string_session, manu_string_sessio, muffin_string_session, manualt_string_session, carlos_all_ss, carlos_all_marta_ss, carlos_lugo_ss, yisus_string_session, yisus_clau_ss, yisus_babi_ss, yisus_charly_ss, yisus_soyclau_ss, shay1_string_session, shay2_string_session, shay3_string_session, shay4_string_session, carlos_all_angela_ss, lachy_all_ss, noris2_string_session, alt_andrea_string_session
+from data import api_id, api_hash, bot_string_session, my_string_session, alt_string_session, cathy_string_session, samuel_string_session, massi_string_session, isma_string_session, bilbo_string_session, japs_string_session, noris_string_session,electro_string_session, carola_string_session, shay_string_session, manu_string_sessio, muffin_string_session, manualt_string_session, carlos_all_ss, carlos_all_marta_ss, carlos_lugo_ss, yisus_string_session, yisus_clau_ss, yisus_babi_ss, yisus_charly_ss, yisus_soyclau_ss, shay1_string_session, shay2_string_session, shay3_string_session, shay4_string_session, carlos_all_angela_ss, lachy_all_ss, noris2_string_session, alt_andrea_string_session, carlos_all_m_ss, evelin_string_session
 import asyncio, time, logging,handlers, schedule
 from telethon import TelegramClient
 from telethon.sessions import StringSession
@@ -9,11 +9,8 @@ a = lambda: loop.create_task(handlers.check_schedule())
 
 async def me(list):
     await asyncio.sleep(20)
-    meh = 1
     for client in list:
-        print(meh)
         await client.send_message('chtwrsbot',"🏅Me")
-        meh+=1
 
 loop = asyncio.get_event_loop()
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s', level=logging.WARNING)
@@ -41,6 +38,7 @@ manualt =  TelegramClient(StringSession(manualt_string_session), api_id, api_has
 carlos1 =  TelegramClient(StringSession(carlos_all_ss), api_id, api_hash)
 carlos2 =  TelegramClient(StringSession(carlos_all_marta_ss), api_id, api_hash)
 carlos3 =  TelegramClient(StringSession(carlos_lugo_ss), api_id, api_hash)
+carlos4 =  TelegramClient(StringSession(carlos_all_m_ss), api_id, api_hash)
 carlos5 =  TelegramClient(StringSession(carlos_all_angela_ss), api_id, api_hash)
 y_soyKlau =  TelegramClient(StringSession(yisus_soyclau_ss), api_id, api_hash)
 y_charly =  TelegramClient(StringSession(yisus_charly_ss), api_id, api_hash)
@@ -52,14 +50,16 @@ shay2 =  TelegramClient(StringSession(shay2_string_session), api_id, api_hash)
 shay3 =  TelegramClient(StringSession(shay3_string_session), api_id, api_hash)
 shay4 =  TelegramClient(StringSession(shay4_string_session), api_id, api_hash)
 lachy =  TelegramClient(StringSession(lachy_all_ss), api_id, api_hash)
+evelin = TelegramClient(StringSession(evelin_string_session), api_id, api_hash)
+
 print(time.asctime(), '-', 'Auto-replying...')
 
 
-all_list = [yo, alt, andrea, cathy, sam , mass, isma, bilbo, japz, noris, noris2, electro, caro, shay, manu, muffin, manualt, carlos1,carlos2, carlos3, carlos5, y_soyKlau, y_charly, y_babi, y_clau, yisus, shay1, shay2,shay3,shay4, lachy]
+all_list = [yo, alt, andrea, cathy, sam , mass, isma, bilbo, japz, noris, noris2, electro, caro, shay, manu, muffin, manualt, carlos1,carlos2, carlos3, carlos4, carlos5, y_soyKlau, y_charly, y_babi, y_clau, yisus, shay1, shay2,shay3,shay4, lachy, evelin]
 
-quest_list = [yo, alt, cathy, andrea, mass, isma, bilbo, japz, noris2, electro, caro, shay, manu, muffin, manualt, carlos1, carlos2, carlos3, carlos5, y_soyKlau, y_charly, y_babi, yisus, shay1, shay2, shay3, shay4, lachy]
+quest_list = [yo, alt, cathy, andrea, mass, isma, bilbo, japz, noris2, electro, caro, shay, manu, muffin, manualt, carlos1, carlos2, carlos3, carlos4, carlos5, y_soyKlau, y_charly, y_babi, yisus, shay1, shay2, shay3, shay4, lachy, evelin]
 
-forward_mobs_list =  [yo, alt, cathy, mass, cathy, isma, bilbo, japz, noris2, caro, muffin, yisus, y_soyKlau]
+forward_mobs_list =  [yo, alt, cathy, mass, cathy, isma, bilbo, japz, noris2, caro, muffin, yisus, y_soyKlau, evelin]
 
 hunt_list = [yo, cathy, isma, noris, electro, manu, muffin, yisus, y_soyKlau]
 
@@ -71,7 +71,7 @@ for client in all_list:
     client.add_event_handler(handlers.handle_updateMe)
     client.add_event_handler(handlers.handle_Stop_Foray)
 
-for client in all_list:
+for client in quest_list:
     client.add_event_handler(handlers.handle_Full_Stamina)
     client.add_event_handler(handlers.handle_stam_deplete)
     client.add_event_handler(handlers.Handle_Do_quest)
@@ -167,6 +167,10 @@ try: #caro
     caro.start()
     loop.create_task(handlers.register(caro, attack=True ,quest=True, favQuest=[0], arenaTime='05:00'  , forwardMobsTo=1420240083, alliance = True))
 except: print(12)
+try: #evelin
+    evelin.start()
+    loop.create_task(handlers.register(evelin, attack=True ,quest=True, favQuest=[0,1,2], arenaTime='05:00'  , forwardMobsTo=1420240083, alliance = True))
+except: print(12)
 try: #shay
     shay.start()
     loop.create_task(handlers.register(shay, quest=True, favQuest=[0,1,2]  ))
@@ -195,6 +199,10 @@ try:
     carlos3.start()
     loop.create_task(handlers.register(carlos3, attack=False, quest=False, favQuest=[0,1,2], arenaTime='05:19'))
 except: print(24)
+try: 
+    carlos4.start()
+    loop.create_task(handlers.register(carlos4, attack=False, quest=False, favQuest=[0,1,2], arenaTime='05:40'))
+except: print(25)
 try: 
     carlos5.start()
     loop.create_task(handlers.register(carlos5,attack=False, quest=False, favQuest=[0,1,2], arenaTime='13:19'))
@@ -251,6 +259,8 @@ loop.create_task(handlers.scheduleArenas())
 loop.create_task(me(all_list))
 
 a()
+
+
 
 yo.run_until_disconnected()
 

@@ -17,12 +17,33 @@ rango2 = '/ga_def'
 rango3 = '/ga_def'
 
 
-async def meh(client, text, order):
-    me = await client.get_me()
-    print(me.username)
-    print(text)
-    print(order)
-    print('\n\n\n')
+
+def getOrder(stat):
+    if stat.lvl < 40:
+        return rango1
+    elif stat.lvl >60:
+        return rango3
+    else: return rango2
+
+def startArenas(cliente):
+    loop.create_task(doArenas(cliente))
+
+def rangerAtk():
+    for id in stats:
+        if stats[id].rangerAtkTime == True:
+            loop.create_task(get_target_and_atk(stats[id]))
+
+def RegularAtk():
+    for id in stats:
+        if stats[id].atk == None:
+            pass
+        elif stats[id].atk:
+            loop.create_task(get_target_and_atk(stats[id]))
+        else:
+            loop.create_task(send_def(stats[id].client))
+    stats[745224074].hunt = True
+
+    loop.create_task(forward_msg(stats[745224074].client, '/g_list', '**🌑Sharks Rise**'))
 
 def getInfoFromMe(st):
     tulevel = 0
@@ -51,6 +72,13 @@ def getInfoFromMe(st):
 
     return [currentstam,tulevel,maxhp, maxstam, currenthp]
 
+async def basic_info(client, text, order):
+    me = await client.get_me()
+    print(me.username)
+    print(text)
+    print(order)
+    print('\n\n\n')
+
 async def register(client, attack=None, quest=None, hunt=None, arenaTime=None, favQuest=None, forwardMobsTo= None, traderId = None, rngrAtk=None, alliance = False):
     global stats
     user = await client.get_me()
@@ -78,24 +106,6 @@ async def doArenas(cliente):
     await asyncio.sleep(randint(350, 400))
     await cliente.send_message('chtwrsbot', '▶️Fast fight'),
 
-def startArenas(cliente):
-    loop.create_task(doArenas(cliente))
-
-def rangerAtk():
-    for id in stats:
-        if stats[id].rangerAtkTime == True:
-            loop.create_task(get_target_and_atk(stats[id]))
-
-def RegularAtk():
-    for id in stats:
-        if stats[id].atk == None:
-            pass
-        elif stats[id].atk:
-            loop.create_task(get_target_and_atk(stats[id]))
-        else:
-            loop.create_task(send_def(stats[id].client))
-    stats[745224074].hunt = True
-
 async def scheduleArenas():
     global schedule1
     await asyncio.sleep(20)
@@ -103,9 +113,9 @@ async def scheduleArenas():
         if stats[scripter].arenaTime is not None:
             stats[scripter].arenaDeamon = schedule1.every().day.at(stats[scripter].arenaTime).do(startArenas, cliente=stats[scripter].client)
             print('Las Arenas empezaran a las %s' %stats[scripter].arenaTime)
-    schedule1.every().day.at('10:10').do(rangerAtk)
-    schedule1.every().day.at('18:10').do(rangerAtk)
-    schedule1.every().day.at('02:10').do(rangerAtk)
+    schedule1.every().day.at('10:15').do(rangerAtk)
+    schedule1.every().day.at('18:15').do(rangerAtk)
+    schedule1.every().day.at('02:15').do(rangerAtk)
     schedule1.every().day.at('10:56:15').do(RegularAtk)
     schedule1.every().day.at('18:56:15').do(RegularAtk)
     schedule1.every().day.at('02:56:15').do(RegularAtk)
@@ -115,21 +125,13 @@ async def check_schedule():
         schedule1.run_pending()
         await asyncio.sleep(2)
 
-def getOrder(stat):
-    if stat.lvl < 40:
-        return rango1
-    elif stat.lvl >60:
-        return rango3
-    else: return rango2
-
 async def get_target_and_atk(stat):
+    stat.hunt = (False if stat.hunt != None else None)
+    stat.doQuest = (False if stat.doQuest != None else None)
     if(stat.alliance):
         order = getOrder(stat)
-        await meh(stat.client, "alliance atk", order)
         await send_alliance_orders(stat.client, order)
     else:
-        stat.hunt = (False if stat.hunt != None else None)
-        stat.doQuest = (False if stat.doQuest != None else None)
         await stats[745224074].client.get_dialogs()
         chat = await stats[745224074].client.get_entity(ss_chat_id)
         message = await stats[745224074].client.get_messages(chat, ids=types.InputMessagePinned())
@@ -145,7 +147,6 @@ async def get_target_and_atk(stat):
         
         await asyncio.sleep(10)
         await send_orders(stat.client, target)
-        await meh(stat.client, "alliance atk", target)
 
 async def send_alliance_orders(cliente, orders):
     await asyncio.sleep(3)
@@ -153,6 +154,19 @@ async def send_alliance_orders(cliente, orders):
 
 async def send_def(cliente):
     await send_orders(cliente, '/g_def SIR')
+
+async def forward_msg(client, msg_to_bot, msg_from_bot):
+    await asyncio.sleep(120)
+    async with client.conversation('chtwrsbot', timeout=300) as conv:
+        await conv.send_message(msg_to_bot)
+        msg = await conv.get_response()
+        while (msg_from_bot not in msg.text):
+            await conv.send_message(msg_to_bot)
+            msg = await conv.get_response()
+
+        await client.get_dialogs()
+        chat = await client.get_entity(1280361206)
+        await client.forward_messages(chat, msg)
 
 #Bot Handlers
 
@@ -186,9 +200,6 @@ async def handle_quest_on_bot(event):
 @events.register(events.NewMessage(pattern='/test'))
 async def handle_test(event):
     print('start Test')
-    rangerAtk()
-    await asyncio.sleep(20)
-    RegularAtk()
 
 
 @events.register(events.NewMessage(pattern='/set_order', incoming=True))
